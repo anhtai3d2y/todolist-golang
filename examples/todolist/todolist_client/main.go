@@ -45,12 +45,13 @@ func main() {
 	// insertTodo(c, "Ngay mai", "Di choi", "Di choi tai noi nao do voi ny")
 	// getAllTodoList(c)
 	// getTodoList(c, 6)
-	updateTodo(c, &pb.Todo{
-		Id:           1,
-		Time:         "Ngay kia",
-		Action:       "Hoc bai",
-		DetailAction: "Hoc golang",
-	})
+	// updateTodo(c, &pb.Todo{
+	// 	Id:           1,
+	// 	Time:         "Ngay kia",
+	// 	Action:       "Hoc bai",
+	// 	DetailAction: "Hoc golang",
+	// })
+	deleteContact(c, 6)
 }
 
 func insertTodo(c pb.TodoListServiceClient, time, action, detailAction string) {
@@ -109,4 +110,17 @@ func updateTodo(cli pb.TodoListServiceClient, updateTodo *pb.Todo) {
 	}
 
 	log.Printf("update response %+v\n", resp)
+}
+
+func deleteContact(cli pb.TodoListServiceClient, id int64) {
+	req := &pb.DeleteRequest{
+		Id: id,
+	}
+	resp, err := cli.Delete(context.Background(), req)
+	if err != nil {
+		log.Printf("call delete err %v\n", err)
+		return
+	}
+
+	log.Printf("delete response %+v\n", resp)
 }

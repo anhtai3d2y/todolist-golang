@@ -135,6 +135,25 @@ func (server) Update(ctx context.Context, req *pb.UpdateRequest) (*pb.UpdateResp
 	return resp, nil
 }
 
+func (server) Delete(ctx context.Context, req *pb.DeleteRequest) (*pb.DeleteResponse, error) {
+	log.Printf("calling delete %v\n", req.GetId())
+	ci := &TodoInfo{
+		Id: req.GetId(),
+	}
+	err := ci.Delete()
+	if err != nil {
+		return &pb.DeleteResponse{
+			StatusCode: -1,
+			Message:    fmt.Sprintf("delete todo item %v err %v", req.GetId(), err),
+		}, nil
+	}
+
+	return &pb.DeleteResponse{
+		StatusCode: 1,
+		Message:    fmt.Sprintf("delete todo item %v successfully", req.GetId()),
+	}, nil
+}
+
 func main() {
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))

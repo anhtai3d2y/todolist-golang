@@ -85,3 +85,15 @@ func (t *TodoInfo) Update() error {
 	log.Printf("update todo %+v, affect %d row\n", t, num)
 	return nil
 }
+
+func (t *TodoInfo) Delete() error {
+	o := orm.NewOrm()
+
+	num, err := o.Delete(t)
+	if err != nil {
+		log.Printf("delete %+v err %v\n", t, err)
+		return err
+	}
+	log.Printf("delete todo item %+v, affect %d row\n", t, num)
+	return nil
+}

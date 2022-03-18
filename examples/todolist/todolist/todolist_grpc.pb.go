@@ -22,6 +22,7 @@ type TodoListServiceClient interface {
 	GetAllTodoList(ctx context.Context, in *GetAllTodoListRequest, opts ...grpc.CallOption) (*GetAllTodoListResponse, error)
 	GetTodoList(ctx context.Context, in *GetTodoListRequest, opts ...grpc.CallOption) (*GetTodoListResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
 
 type todoListServiceClient struct {
@@ -68,6 +69,15 @@ func (c *todoListServiceClient) Update(ctx context.Context, in *UpdateRequest, o
 	return out, nil
 }
 
+func (c *todoListServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, "/todolist.TodoListService/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TodoListServiceServer is the server API for TodoListService service.
 // All implementations must embed UnimplementedTodoListServiceServer
 // for forward compatibility
@@ -76,6 +86,7 @@ type TodoListServiceServer interface {
 	GetAllTodoList(context.Context, *GetAllTodoListRequest) (*GetAllTodoListResponse, error)
 	GetTodoList(context.Context, *GetTodoListRequest) (*GetTodoListResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 	mustEmbedUnimplementedTodoListServiceServer()
 }
 
@@ -94,6 +105,9 @@ func (UnimplementedTodoListServiceServer) GetTodoList(context.Context, *GetTodoL
 }
 func (UnimplementedTodoListServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedTodoListServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
 func (UnimplementedTodoListServiceServer) mustEmbedUnimplementedTodoListServiceServer() {}
 
@@ -180,6 +194,24 @@ func _TodoListService_Update_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TodoListService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TodoListServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/todolist.TodoListService/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TodoListServiceServer).Delete(ctx, req.(*DeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TodoListService_ServiceDesc is the grpc.ServiceDesc for TodoListService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -202,6 +234,10 @@ var TodoListService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _TodoListService_Update_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _TodoListService_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

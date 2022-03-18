@@ -22,6 +22,7 @@ option java_outer_classname = "TodoListProto";
 package todolist;
 
 
+import "google/api/annotations.proto";
 
 service TodoListService{
   rpc Insert(InsertRequest) returns (InsertResponse){}
@@ -29,7 +30,18 @@ service TodoListService{
   rpc GetTodoList(GetTodoListRequest) returns (GetTodoListResponse){}
   rpc Update(UpdateRequest) returns (UpdateResponse){}
   rpc Delete(DeleteRequest) returns (DeleteResponse){}
+
+  rpc Echo(StringMessage) returns (StringMessage) {
+    option (google.api.http) = {
+      post: "/echo"
+      body: "*"
+    };
+  }
 }
+
+message StringMessage {
+   string value = 1;
+ }
 
 message Todo{
   int64  id = 1;

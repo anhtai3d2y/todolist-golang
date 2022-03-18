@@ -38,14 +38,19 @@ var (
 
 func init() {
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-
 	connectStr := "root:@tcp(127.0.0.1)/todolist?charset=utf8"
 	err := orm.RegisterDataBase("default", "mysql", connectStr, 100, 100)
 	if err != nil {
 		log.Panicf("Register database err %v", err)
 	}
 
-	log.Println("Connect database successfully!")
+	orm.RegisterModel(new(TodoInfo))
+	err = orm.RunSyncdb("default", false, false)
+	if err != nil {
+		log.Panicf("Run migrate database err %v", err)
+	}
+
+	fmt.Println("Connect database successfully!")
 
 }
 

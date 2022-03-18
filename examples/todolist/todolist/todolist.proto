@@ -25,6 +25,9 @@ package todolist;
 
 service TodoListService{
   rpc Insert(InsertRequest) returns (InsertResponse){}
+  rpc GetAllTodoList(GetAllTodoListRequest) returns (GetAllTodoListResponse){}
+  rpc GetTodoList(GetTodoListRequest) returns (GetTodoListResponse){}
+  rpc Update(UpdateRequest) returns (UpdateResponse){}
 }
 
 message Todo{
@@ -42,3 +45,26 @@ message InsertResponse{
   string message = 2;
 }
 
+message GetAllTodoListRequest {
+}
+
+message GetAllTodoListResponse {
+    Todo todo = 1;
+}
+
+message GetTodoListRequest {
+    int64 id = 1;
+}
+
+message GetTodoListResponse {
+    Todo todo = 1;
+}
+
+message UpdateRequest {
+    Todo newTodo = 1;
+}
+
+message UpdateResponse {
+    int32 statusCode = 1; //statusCode == 1 -> success
+    string message = 2;
+}

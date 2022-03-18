@@ -19,6 +19,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TodoListServiceClient interface {
 	Insert(ctx context.Context, in *InsertRequest, opts ...grpc.CallOption) (*InsertResponse, error)
+	GetAllTodoList(ctx context.Context, in *GetAllTodoListRequest, opts ...grpc.CallOption) (*GetAllTodoListResponse, error)
+	GetTodoList(ctx context.Context, in *GetTodoListRequest, opts ...grpc.CallOption) (*GetTodoListResponse, error)
+	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 }
 
 type todoListServiceClient struct {
@@ -38,11 +41,41 @@ func (c *todoListServiceClient) Insert(ctx context.Context, in *InsertRequest, o
 	return out, nil
 }
 
+func (c *todoListServiceClient) GetAllTodoList(ctx context.Context, in *GetAllTodoListRequest, opts ...grpc.CallOption) (*GetAllTodoListResponse, error) {
+	out := new(GetAllTodoListResponse)
+	err := c.cc.Invoke(ctx, "/todolist.TodoListService/GetAllTodoList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *todoListServiceClient) GetTodoList(ctx context.Context, in *GetTodoListRequest, opts ...grpc.CallOption) (*GetTodoListResponse, error) {
+	out := new(GetTodoListResponse)
+	err := c.cc.Invoke(ctx, "/todolist.TodoListService/GetTodoList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *todoListServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
+	out := new(UpdateResponse)
+	err := c.cc.Invoke(ctx, "/todolist.TodoListService/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TodoListServiceServer is the server API for TodoListService service.
 // All implementations must embed UnimplementedTodoListServiceServer
 // for forward compatibility
 type TodoListServiceServer interface {
 	Insert(context.Context, *InsertRequest) (*InsertResponse, error)
+	GetAllTodoList(context.Context, *GetAllTodoListRequest) (*GetAllTodoListResponse, error)
+	GetTodoList(context.Context, *GetTodoListRequest) (*GetTodoListResponse, error)
+	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	mustEmbedUnimplementedTodoListServiceServer()
 }
 
@@ -52,6 +85,15 @@ type UnimplementedTodoListServiceServer struct {
 
 func (UnimplementedTodoListServiceServer) Insert(context.Context, *InsertRequest) (*InsertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedTodoListServiceServer) GetAllTodoList(context.Context, *GetAllTodoListRequest) (*GetAllTodoListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllTodoList not implemented")
+}
+func (UnimplementedTodoListServiceServer) GetTodoList(context.Context, *GetTodoListRequest) (*GetTodoListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTodoList not implemented")
+}
+func (UnimplementedTodoListServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedTodoListServiceServer) mustEmbedUnimplementedTodoListServiceServer() {}
 
@@ -84,6 +126,60 @@ func _TodoListService_Insert_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TodoListService_GetAllTodoList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllTodoListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TodoListServiceServer).GetAllTodoList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/todolist.TodoListService/GetAllTodoList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TodoListServiceServer).GetAllTodoList(ctx, req.(*GetAllTodoListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TodoListService_GetTodoList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTodoListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TodoListServiceServer).GetTodoList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/todolist.TodoListService/GetTodoList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TodoListServiceServer).GetTodoList(ctx, req.(*GetTodoListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TodoListService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TodoListServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/todolist.TodoListService/Update",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TodoListServiceServer).Update(ctx, req.(*UpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TodoListService_ServiceDesc is the grpc.ServiceDesc for TodoListService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +190,18 @@ var TodoListService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Insert",
 			Handler:    _TodoListService_Insert_Handler,
+		},
+		{
+			MethodName: "GetAllTodoList",
+			Handler:    _TodoListService_GetAllTodoList_Handler,
+		},
+		{
+			MethodName: "GetTodoList",
+			Handler:    _TodoListService_GetTodoList_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _TodoListService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

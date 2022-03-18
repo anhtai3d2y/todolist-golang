@@ -30,7 +30,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	pb "google.golang.org/grpc/examples/todolist/todolist"
+	"google.golang.org/grpc/status"
 )
 
 var (
@@ -77,6 +79,57 @@ func (s *server) Insert(ctx context.Context, req *pb.InsertRequest) (*pb.InsertR
 	resp := &pb.InsertResponse{
 		StatusCode: 1,
 		Message:    "Insert ok",
+	}
+
+	return resp, nil
+}
+
+func (s *server) GetAllTodoList(ctx context.Context, req *pb.GetAllTodoListRequest) (*pb.GetAllTodoListResponse, error) {
+	log.Printf("calling read all")
+	ti, err := GetAll()
+	if err == orm.ErrNoRows {
+		return nil, status.Errorf(codes.InvalidArgument, "Table empty")
+	}
+	if err != nil {
+		return nil, status.Errorf(codes.Unknown, "Get all todo list err %v", err)
+	}
+
+	return &pb.GetAllTodoListResponse{
+		Todo: ConvertTodoInfo2PbTodo(ti),
+	}, nil
+
+}
+
+func (s *server) GetTodoList(ctx context.Context, req *pb.GetTodoListRequest) (*pb.GetTodoListResponse, error) {
+	log.Printf("calling read %v\n", req.GetId())
+	ti, err := Get(req.GetId())
+	if err == orm.ErrNoRows {
+		return nil, status.Errorf(codes.InvalidArgument, "Id %s not exist", req.GetId())
+	}
+	if err != nil {
+		return nil, status.Errorf(codes.Unknown, "Get id %s err %v", req.GetId(), err)
+	}
+
+	return &pb.GetTodoListResponse{
+		Todo: ConvertTodoInfo2PbTodo(ti),
+	}, nil
+
+}
+
+func (server) Update(ctx context.Context, req *pb.UpdateRequest) (*pb.UpdateResponse, error) {
+	if req.GetNewTodo() == nil {
+		return nil, status.Error(codes.InvalidArgument, "update req with nil todo")
+	}
+	log.Printf("calling update with data %v\n", req.GetNewTodo())
+	ci := ConvertPbTodo2TodoInfo(req.GetNewTodo())
+	err := ci.Update()
+	if err != nil {
+		return nil, status.Errorf(codes.Unknown, "update %+v err %v", req.GetNewTodo(), err)
+	}
+
+	resp := &pb.UpdateResponse{
+		StatusCode: 1,
+		Message:    "Update successfully",
 	}
 
 	return resp, nil

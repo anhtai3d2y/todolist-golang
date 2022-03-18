@@ -42,7 +42,15 @@ func main() {
 	defer conn.Close()
 	c := pb.NewTodoListServiceClient(conn)
 
-	insertTodo(c, "Ngay mai", "Di choi", "Di choi tai noi nao do voi ny")
+	// insertTodo(c, "Ngay mai", "Di choi", "Di choi tai noi nao do voi ny")
+	// getAllTodoList(c)
+	// getTodoList(c, 6)
+	updateTodo(c, &pb.Todo{
+		Id:           1,
+		Time:         "Ngay kia",
+		Action:       "Hoc bai",
+		DetailAction: "Hoc golang",
+	})
 }
 
 func insertTodo(c pb.TodoListServiceClient, time, action, detailAction string) {
@@ -61,4 +69,44 @@ func insertTodo(c pb.TodoListServiceClient, time, action, detailAction string) {
 	}
 
 	log.Printf("Insert response %+v\n", resp)
+}
+
+func getAllTodoList(c pb.TodoListServiceClient) {
+	req := &pb.GetAllTodoListRequest{}
+
+	resp, err := c.GetAllTodoList(context.Background(), req)
+	if err != nil {
+		log.Printf("call read all err %v\n", err)
+		return
+	}
+
+	log.Printf("read all response %+v\n", resp.GetTodo())
+}
+
+func getTodoList(c pb.TodoListServiceClient, id int64) {
+	req := &pb.GetTodoListRequest{
+		Id: id,
+	}
+
+	resp, err := c.GetTodoList(context.Background(), req)
+	if err != nil {
+		log.Printf("call read err %v\n", err)
+		return
+	}
+
+	log.Printf("read response %+v\n", resp.GetTodo())
+}
+
+func updateTodo(cli pb.TodoListServiceClient, updateTodo *pb.Todo) {
+	req := &pb.UpdateRequest{
+		NewTodo: updateTodo,
+	}
+
+	resp, err := cli.Update(context.Background(), req)
+	if err != nil {
+		log.Printf("call update err %v\n", err)
+		return
+	}
+
+	log.Printf("update response %+v\n", resp)
 }

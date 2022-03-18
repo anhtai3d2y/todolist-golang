@@ -24,5 +24,21 @@ package todolist;
 
 
 service TodoListService{
+  rpc Insert(InsertRequest) returns (InsertResponse){}
+}
+
+message Todo{
+  string time = 1;
+  string action = 2;
+  string detailAction = 3;
+}
+
+message InsertRequest{
+  Todo todo = 1;
+}
+
+message InsertResponse{
+  int32 statusCode = 1; //statusCode == 1 -> success
+  string message = 2;
 }
 

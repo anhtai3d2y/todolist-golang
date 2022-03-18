@@ -20,6 +20,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -57,6 +58,28 @@ func init() {
 // server is used to implement todolist.GreeterServer.
 type server struct {
 	pb.UnimplementedTodoListServiceServer
+}
+
+func (s *server) Insert(ctx context.Context, req *pb.InsertRequest) (*pb.InsertResponse, error) {
+	log.Printf("Calling insert %+v\n", req.Todo)
+	ti := ConvertPbTodo2TodoInfo(req.Todo)
+
+	err := ti.Insert()
+	if err != nil {
+		resp := &pb.InsertResponse{
+			StatusCode: -1,
+			Message:    fmt.Sprintf("Insert %+v err %v\n", ti, err),
+		}
+		return resp, nil
+		// return nil, status.Errorf(codes.InvalidArgument, "Insert %+v err %v", ti, err)
+	}
+
+	resp := &pb.InsertResponse{
+		StatusCode: 1,
+		Message:    "Insert ok",
+	}
+
+	return resp, nil
 }
 
 func main() {

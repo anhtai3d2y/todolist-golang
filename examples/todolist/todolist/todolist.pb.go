@@ -34,17 +34,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type SumRequest struct {
+type Todo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Num1 int32 `protobuf:"varint,1,opt,name=num1,proto3" json:"num1,omitempty"`
-	Num2 int32 `protobuf:"varint,2,opt,name=num2,proto3" json:"num2,omitempty"`
+	Time         string `protobuf:"bytes,1,opt,name=time,proto3" json:"time,omitempty"`
+	Action       string `protobuf:"bytes,2,opt,name=action,proto3" json:"action,omitempty"`
+	DetailAction string `protobuf:"bytes,3,opt,name=detailAction,proto3" json:"detailAction,omitempty"`
 }
 
-func (x *SumRequest) Reset() {
-	*x = SumRequest{}
+func (x *Todo) Reset() {
+	*x = Todo{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_todolist_todolist_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -52,13 +53,13 @@ func (x *SumRequest) Reset() {
 	}
 }
 
-func (x *SumRequest) String() string {
+func (x *Todo) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SumRequest) ProtoMessage() {}
+func (*Todo) ProtoMessage() {}
 
-func (x *SumRequest) ProtoReflect() protoreflect.Message {
+func (x *Todo) ProtoReflect() protoreflect.Message {
 	mi := &file_todolist_todolist_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -70,35 +71,42 @@ func (x *SumRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SumRequest.ProtoReflect.Descriptor instead.
-func (*SumRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use Todo.ProtoReflect.Descriptor instead.
+func (*Todo) Descriptor() ([]byte, []int) {
 	return file_todolist_todolist_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *SumRequest) GetNum1() int32 {
+func (x *Todo) GetTime() string {
 	if x != nil {
-		return x.Num1
+		return x.Time
 	}
-	return 0
+	return ""
 }
 
-func (x *SumRequest) GetNum2() int32 {
+func (x *Todo) GetAction() string {
 	if x != nil {
-		return x.Num2
+		return x.Action
 	}
-	return 0
+	return ""
 }
 
-type SumResponse struct {
+func (x *Todo) GetDetailAction() string {
+	if x != nil {
+		return x.DetailAction
+	}
+	return ""
+}
+
+type InsertRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Result int32 `protobuf:"varint,1,opt,name=result,proto3" json:"result,omitempty"`
+	Todo *Todo `protobuf:"bytes,1,opt,name=todo,proto3" json:"todo,omitempty"`
 }
 
-func (x *SumResponse) Reset() {
-	*x = SumResponse{}
+func (x *InsertRequest) Reset() {
+	*x = InsertRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_todolist_todolist_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -106,13 +114,13 @@ func (x *SumResponse) Reset() {
 	}
 }
 
-func (x *SumResponse) String() string {
+func (x *InsertRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SumResponse) ProtoMessage() {}
+func (*InsertRequest) ProtoMessage() {}
 
-func (x *SumResponse) ProtoReflect() protoreflect.Message {
+func (x *InsertRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_todolist_todolist_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -124,28 +132,29 @@ func (x *SumResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SumResponse.ProtoReflect.Descriptor instead.
-func (*SumResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use InsertRequest.ProtoReflect.Descriptor instead.
+func (*InsertRequest) Descriptor() ([]byte, []int) {
 	return file_todolist_todolist_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SumResponse) GetResult() int32 {
+func (x *InsertRequest) GetTodo() *Todo {
 	if x != nil {
-		return x.Result
+		return x.Todo
 	}
-	return 0
+	return nil
 }
 
-type PNDRequest struct {
+type InsertResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Num int32 `protobuf:"varint,1,opt,name=num,proto3" json:"num,omitempty"`
+	StatusCode int32  `protobuf:"varint,1,opt,name=statusCode,proto3" json:"statusCode,omitempty"` //statusCode == 0 -> success
+	Message    string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 }
 
-func (x *PNDRequest) Reset() {
-	*x = PNDRequest{}
+func (x *InsertResponse) Reset() {
+	*x = InsertResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_todolist_todolist_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -153,13 +162,13 @@ func (x *PNDRequest) Reset() {
 	}
 }
 
-func (x *PNDRequest) String() string {
+func (x *InsertResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PNDRequest) ProtoMessage() {}
+func (*InsertResponse) ProtoMessage() {}
 
-func (x *PNDRequest) ProtoReflect() protoreflect.Message {
+func (x *InsertResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_todolist_todolist_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -171,345 +180,23 @@ func (x *PNDRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PNDRequest.ProtoReflect.Descriptor instead.
-func (*PNDRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use InsertResponse.ProtoReflect.Descriptor instead.
+func (*InsertResponse) Descriptor() ([]byte, []int) {
 	return file_todolist_todolist_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *PNDRequest) GetNum() int32 {
+func (x *InsertResponse) GetStatusCode() int32 {
 	if x != nil {
-		return x.Num
+		return x.StatusCode
 	}
 	return 0
 }
 
-type PNDResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Result int32 `protobuf:"varint,1,opt,name=result,proto3" json:"result,omitempty"`
-}
-
-func (x *PNDResponse) Reset() {
-	*x = PNDResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_todolist_todolist_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *PNDResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PNDResponse) ProtoMessage() {}
-
-func (x *PNDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_todolist_todolist_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PNDResponse.ProtoReflect.Descriptor instead.
-func (*PNDResponse) Descriptor() ([]byte, []int) {
-	return file_todolist_todolist_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *PNDResponse) GetResult() int32 {
+func (x *InsertResponse) GetMessage() string {
 	if x != nil {
-		return x.Result
+		return x.Message
 	}
-	return 0
-}
-
-type AverageRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Num float32 `protobuf:"fixed32,1,opt,name=num,proto3" json:"num,omitempty"`
-}
-
-func (x *AverageRequest) Reset() {
-	*x = AverageRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_todolist_todolist_proto_msgTypes[4]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AverageRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AverageRequest) ProtoMessage() {}
-
-func (x *AverageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_todolist_todolist_proto_msgTypes[4]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AverageRequest.ProtoReflect.Descriptor instead.
-func (*AverageRequest) Descriptor() ([]byte, []int) {
-	return file_todolist_todolist_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *AverageRequest) GetNum() float32 {
-	if x != nil {
-		return x.Num
-	}
-	return 0
-}
-
-type AverageResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Result float32 `protobuf:"fixed32,1,opt,name=result,proto3" json:"result,omitempty"`
-}
-
-func (x *AverageResponse) Reset() {
-	*x = AverageResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_todolist_todolist_proto_msgTypes[5]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AverageResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AverageResponse) ProtoMessage() {}
-
-func (x *AverageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_todolist_todolist_proto_msgTypes[5]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AverageResponse.ProtoReflect.Descriptor instead.
-func (*AverageResponse) Descriptor() ([]byte, []int) {
-	return file_todolist_todolist_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *AverageResponse) GetResult() float32 {
-	if x != nil {
-		return x.Result
-	}
-	return 0
-}
-
-type FindMaxRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Num int32 `protobuf:"varint,1,opt,name=num,proto3" json:"num,omitempty"`
-}
-
-func (x *FindMaxRequest) Reset() {
-	*x = FindMaxRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_todolist_todolist_proto_msgTypes[6]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *FindMaxRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*FindMaxRequest) ProtoMessage() {}
-
-func (x *FindMaxRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_todolist_todolist_proto_msgTypes[6]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use FindMaxRequest.ProtoReflect.Descriptor instead.
-func (*FindMaxRequest) Descriptor() ([]byte, []int) {
-	return file_todolist_todolist_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *FindMaxRequest) GetNum() int32 {
-	if x != nil {
-		return x.Num
-	}
-	return 0
-}
-
-type FindMaxResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Max int32 `protobuf:"varint,1,opt,name=max,proto3" json:"max,omitempty"`
-}
-
-func (x *FindMaxResponse) Reset() {
-	*x = FindMaxResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_todolist_todolist_proto_msgTypes[7]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *FindMaxResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*FindMaxResponse) ProtoMessage() {}
-
-func (x *FindMaxResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_todolist_todolist_proto_msgTypes[7]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use FindMaxResponse.ProtoReflect.Descriptor instead.
-func (*FindMaxResponse) Descriptor() ([]byte, []int) {
-	return file_todolist_todolist_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *FindMaxResponse) GetMax() int32 {
-	if x != nil {
-		return x.Max
-	}
-	return 0
-}
-
-type SquareRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Num int32 `protobuf:"varint,1,opt,name=num,proto3" json:"num,omitempty"`
-}
-
-func (x *SquareRequest) Reset() {
-	*x = SquareRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_todolist_todolist_proto_msgTypes[8]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SquareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SquareRequest) ProtoMessage() {}
-
-func (x *SquareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_todolist_todolist_proto_msgTypes[8]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SquareRequest.ProtoReflect.Descriptor instead.
-func (*SquareRequest) Descriptor() ([]byte, []int) {
-	return file_todolist_todolist_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *SquareRequest) GetNum() int32 {
-	if x != nil {
-		return x.Num
-	}
-	return 0
-}
-
-type SquareResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Result float64 `protobuf:"fixed64,1,opt,name=result,proto3" json:"result,omitempty"`
-}
-
-func (x *SquareResponse) Reset() {
-	*x = SquareResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_todolist_todolist_proto_msgTypes[9]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SquareResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SquareResponse) ProtoMessage() {}
-
-func (x *SquareResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_todolist_todolist_proto_msgTypes[9]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SquareResponse.ProtoReflect.Descriptor instead.
-func (*SquareResponse) Descriptor() ([]byte, []int) {
-	return file_todolist_todolist_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *SquareResponse) GetResult() float64 {
-	if x != nil {
-		return x.Result
-	}
-	return 0
+	return ""
 }
 
 var File_todolist_todolist_proto protoreflect.FileDescriptor
@@ -517,63 +204,32 @@ var File_todolist_todolist_proto protoreflect.FileDescriptor
 var file_todolist_todolist_proto_rawDesc = []byte{
 	0x0a, 0x17, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2f, 0x74, 0x6f, 0x64, 0x6f, 0x6c,
 	0x69, 0x73, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x08, 0x74, 0x6f, 0x64, 0x6f, 0x6c,
-	0x69, 0x73, 0x74, 0x22, 0x34, 0x0a, 0x0a, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x75, 0x6d, 0x31, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
-	0x04, 0x6e, 0x75, 0x6d, 0x31, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x75, 0x6d, 0x32, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x05, 0x52, 0x04, 0x6e, 0x75, 0x6d, 0x32, 0x22, 0x25, 0x0a, 0x0b, 0x53, 0x75, 0x6d,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75,
-	0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74,
-	0x22, 0x1e, 0x0a, 0x0a, 0x50, 0x4e, 0x44, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x10,
-	0x0a, 0x03, 0x6e, 0x75, 0x6d, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x6e, 0x75, 0x6d,
-	0x22, 0x25, 0x0a, 0x0b, 0x50, 0x4e, 0x44, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x16, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
-	0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x22, 0x0a, 0x0e, 0x41, 0x76, 0x65, 0x72, 0x61,
-	0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x6e, 0x75, 0x6d,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x02, 0x52, 0x03, 0x6e, 0x75, 0x6d, 0x22, 0x29, 0x0a, 0x0f, 0x41,
-	0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16,
-	0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x02, 0x52, 0x06,
-	0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x22, 0x0a, 0x0e, 0x46, 0x69, 0x6e, 0x64, 0x4d, 0x61,
-	0x78, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x6e, 0x75, 0x6d, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x6e, 0x75, 0x6d, 0x22, 0x23, 0x0a, 0x0f, 0x46, 0x69,
-	0x6e, 0x64, 0x4d, 0x61, 0x78, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x10, 0x0a,
-	0x03, 0x6d, 0x61, 0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x6d, 0x61, 0x78, 0x22,
-	0x21, 0x0a, 0x0d, 0x53, 0x71, 0x75, 0x61, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x12, 0x10, 0x0a, 0x03, 0x6e, 0x75, 0x6d, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x6e,
-	0x75, 0x6d, 0x22, 0x28, 0x0a, 0x0e, 0x53, 0x71, 0x75, 0x61, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x01, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x32, 0x8a, 0x03, 0x0a,
-	0x0f, 0x54, 0x6f, 0x64, 0x6f, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
-	0x12, 0x34, 0x0a, 0x03, 0x53, 0x75, 0x6d, 0x12, 0x14, 0x2e, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69,
-	0x73, 0x74, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e,
-	0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x40, 0x0a, 0x0f, 0x53, 0x75, 0x6d, 0x57, 0x69, 0x74,
-	0x68, 0x44, 0x65, 0x61, 0x64, 0x6c, 0x69, 0x6e, 0x65, 0x12, 0x14, 0x2e, 0x74, 0x6f, 0x64, 0x6f,
-	0x6c, 0x69, 0x73, 0x74, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x15, 0x2e, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2e, 0x53, 0x75, 0x6d, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x36, 0x0a, 0x03, 0x50, 0x4e, 0x44, 0x12,
-	0x14, 0x2e, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2e, 0x50, 0x4e, 0x44, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74,
-	0x2e, 0x50, 0x4e, 0x44, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x30, 0x01,
-	0x12, 0x42, 0x0a, 0x07, 0x41, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x12, 0x18, 0x2e, 0x74, 0x6f,
-	0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2e, 0x41, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74,
-	0x2e, 0x41, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x00, 0x28, 0x01, 0x12, 0x44, 0x0a, 0x07, 0x46, 0x69, 0x6e, 0x64, 0x4d, 0x61, 0x78, 0x12,
-	0x18, 0x2e, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2e, 0x46, 0x69, 0x6e, 0x64, 0x4d,
-	0x61, 0x78, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x74, 0x6f, 0x64, 0x6f,
-	0x6c, 0x69, 0x73, 0x74, 0x2e, 0x46, 0x69, 0x6e, 0x64, 0x4d, 0x61, 0x78, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x28, 0x01, 0x30, 0x01, 0x12, 0x3d, 0x0a, 0x06, 0x53, 0x71,
-	0x75, 0x61, 0x72, 0x65, 0x12, 0x17, 0x2e, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2e,
-	0x53, 0x71, 0x75, 0x61, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e,
-	0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2e, 0x53, 0x71, 0x75, 0x61, 0x72, 0x65, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x5f, 0x0a, 0x19, 0x69, 0x6f, 0x2e,
-	0x67, 0x72, 0x70, 0x63, 0x2e, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x73, 0x2e, 0x74, 0x6f,
-	0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x42, 0x0d, 0x54, 0x6f, 0x64, 0x6f, 0x4c, 0x69, 0x73, 0x74,
-	0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x31, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
-	0x67, 0x6f, 0x6c, 0x61, 0x6e, 0x67, 0x2e, 0x6f, 0x72, 0x67, 0x2f, 0x67, 0x72, 0x70, 0x63, 0x2f,
-	0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x73, 0x2f, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73,
-	0x74, 0x2f, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x69, 0x73, 0x74, 0x22, 0x56, 0x0a, 0x04, 0x54, 0x6f, 0x64, 0x6f, 0x12, 0x12, 0x0a, 0x04, 0x74,
+	0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x69, 0x6d, 0x65, 0x12,
+	0x16, 0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x22, 0x0a, 0x0c, 0x64, 0x65, 0x74, 0x61, 0x69,
+	0x6c, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x64,
+	0x65, 0x74, 0x61, 0x69, 0x6c, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x33, 0x0a, 0x0d, 0x49,
+	0x6e, 0x73, 0x65, 0x72, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x22, 0x0a, 0x04,
+	0x74, 0x6f, 0x64, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x74, 0x6f, 0x64,
+	0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2e, 0x54, 0x6f, 0x64, 0x6f, 0x52, 0x04, 0x74, 0x6f, 0x64, 0x6f,
+	0x22, 0x4a, 0x0a, 0x0e, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f, 0x64, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0a, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f,
+	0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x32, 0x50, 0x0a, 0x0f,
+	0x54, 0x6f, 0x64, 0x6f, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12,
+	0x3d, 0x0a, 0x06, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x12, 0x17, 0x2e, 0x74, 0x6f, 0x64, 0x6f,
+	0x6c, 0x69, 0x73, 0x74, 0x2e, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x18, 0x2e, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2e, 0x49, 0x6e,
+	0x73, 0x65, 0x72, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x5f,
+	0x0a, 0x19, 0x69, 0x6f, 0x2e, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c,
+	0x65, 0x73, 0x2e, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x42, 0x0d, 0x54, 0x6f, 0x64,
+	0x6f, 0x4c, 0x69, 0x73, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x31, 0x67, 0x6f,
+	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x67, 0x6f, 0x6c, 0x61, 0x6e, 0x67, 0x2e, 0x6f, 0x72, 0x67, 0x2f,
+	0x67, 0x72, 0x70, 0x63, 0x2f, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x73, 0x2f, 0x74, 0x6f,
+	0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x2f, 0x74, 0x6f, 0x64, 0x6f, 0x6c, 0x69, 0x73, 0x74, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -588,37 +244,21 @@ func file_todolist_todolist_proto_rawDescGZIP() []byte {
 	return file_todolist_todolist_proto_rawDescData
 }
 
-var file_todolist_todolist_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_todolist_todolist_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_todolist_todolist_proto_goTypes = []interface{}{
-	(*SumRequest)(nil),      // 0: todolist.SumRequest
-	(*SumResponse)(nil),     // 1: todolist.SumResponse
-	(*PNDRequest)(nil),      // 2: todolist.PNDRequest
-	(*PNDResponse)(nil),     // 3: todolist.PNDResponse
-	(*AverageRequest)(nil),  // 4: todolist.AverageRequest
-	(*AverageResponse)(nil), // 5: todolist.AverageResponse
-	(*FindMaxRequest)(nil),  // 6: todolist.FindMaxRequest
-	(*FindMaxResponse)(nil), // 7: todolist.FindMaxResponse
-	(*SquareRequest)(nil),   // 8: todolist.SquareRequest
-	(*SquareResponse)(nil),  // 9: todolist.SquareResponse
+	(*Todo)(nil),           // 0: todolist.Todo
+	(*InsertRequest)(nil),  // 1: todolist.InsertRequest
+	(*InsertResponse)(nil), // 2: todolist.InsertResponse
 }
 var file_todolist_todolist_proto_depIdxs = []int32{
-	0, // 0: todolist.TodoListService.Sum:input_type -> todolist.SumRequest
-	0, // 1: todolist.TodoListService.SumWithDeadline:input_type -> todolist.SumRequest
-	2, // 2: todolist.TodoListService.PND:input_type -> todolist.PNDRequest
-	4, // 3: todolist.TodoListService.Average:input_type -> todolist.AverageRequest
-	6, // 4: todolist.TodoListService.FindMax:input_type -> todolist.FindMaxRequest
-	8, // 5: todolist.TodoListService.Square:input_type -> todolist.SquareRequest
-	1, // 6: todolist.TodoListService.Sum:output_type -> todolist.SumResponse
-	1, // 7: todolist.TodoListService.SumWithDeadline:output_type -> todolist.SumResponse
-	3, // 8: todolist.TodoListService.PND:output_type -> todolist.PNDResponse
-	5, // 9: todolist.TodoListService.Average:output_type -> todolist.AverageResponse
-	7, // 10: todolist.TodoListService.FindMax:output_type -> todolist.FindMaxResponse
-	9, // 11: todolist.TodoListService.Square:output_type -> todolist.SquareResponse
-	6, // [6:12] is the sub-list for method output_type
-	0, // [0:6] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: todolist.InsertRequest.todo:type_name -> todolist.Todo
+	1, // 1: todolist.TodoListService.Insert:input_type -> todolist.InsertRequest
+	2, // 2: todolist.TodoListService.Insert:output_type -> todolist.InsertResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_todolist_todolist_proto_init() }
@@ -628,7 +268,7 @@ func file_todolist_todolist_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_todolist_todolist_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SumRequest); i {
+			switch v := v.(*Todo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -640,7 +280,7 @@ func file_todolist_todolist_proto_init() {
 			}
 		}
 		file_todolist_todolist_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SumResponse); i {
+			switch v := v.(*InsertRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -652,91 +292,7 @@ func file_todolist_todolist_proto_init() {
 			}
 		}
 		file_todolist_todolist_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PNDRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_todolist_todolist_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PNDResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_todolist_todolist_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AverageRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_todolist_todolist_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AverageResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_todolist_todolist_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FindMaxRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_todolist_todolist_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FindMaxResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_todolist_todolist_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SquareRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_todolist_todolist_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SquareResponse); i {
+			switch v := v.(*InsertResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -754,7 +310,7 @@ func file_todolist_todolist_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_todolist_todolist_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

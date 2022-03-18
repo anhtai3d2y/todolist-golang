@@ -18,12 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TodoListServiceClient interface {
-	Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error)
-	SumWithDeadline(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error)
-	PND(ctx context.Context, in *PNDRequest, opts ...grpc.CallOption) (TodoListService_PNDClient, error)
-	Average(ctx context.Context, opts ...grpc.CallOption) (TodoListService_AverageClient, error)
-	FindMax(ctx context.Context, opts ...grpc.CallOption) (TodoListService_FindMaxClient, error)
-	Square(ctx context.Context, in *SquareRequest, opts ...grpc.CallOption) (*SquareResponse, error)
+	Insert(ctx context.Context, in *InsertRequest, opts ...grpc.CallOption) (*InsertResponse, error)
 }
 
 type todoListServiceClient struct {
@@ -34,124 +29,9 @@ func NewTodoListServiceClient(cc grpc.ClientConnInterface) TodoListServiceClient
 	return &todoListServiceClient{cc}
 }
 
-func (c *todoListServiceClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error) {
-	out := new(SumResponse)
-	err := c.cc.Invoke(ctx, "/todolist.TodoListService/Sum", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *todoListServiceClient) SumWithDeadline(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumResponse, error) {
-	out := new(SumResponse)
-	err := c.cc.Invoke(ctx, "/todolist.TodoListService/SumWithDeadline", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *todoListServiceClient) PND(ctx context.Context, in *PNDRequest, opts ...grpc.CallOption) (TodoListService_PNDClient, error) {
-	stream, err := c.cc.NewStream(ctx, &TodoListService_ServiceDesc.Streams[0], "/todolist.TodoListService/PND", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &todoListServicePNDClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type TodoListService_PNDClient interface {
-	Recv() (*PNDResponse, error)
-	grpc.ClientStream
-}
-
-type todoListServicePNDClient struct {
-	grpc.ClientStream
-}
-
-func (x *todoListServicePNDClient) Recv() (*PNDResponse, error) {
-	m := new(PNDResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *todoListServiceClient) Average(ctx context.Context, opts ...grpc.CallOption) (TodoListService_AverageClient, error) {
-	stream, err := c.cc.NewStream(ctx, &TodoListService_ServiceDesc.Streams[1], "/todolist.TodoListService/Average", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &todoListServiceAverageClient{stream}
-	return x, nil
-}
-
-type TodoListService_AverageClient interface {
-	Send(*AverageRequest) error
-	CloseAndRecv() (*AverageResponse, error)
-	grpc.ClientStream
-}
-
-type todoListServiceAverageClient struct {
-	grpc.ClientStream
-}
-
-func (x *todoListServiceAverageClient) Send(m *AverageRequest) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *todoListServiceAverageClient) CloseAndRecv() (*AverageResponse, error) {
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	m := new(AverageResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *todoListServiceClient) FindMax(ctx context.Context, opts ...grpc.CallOption) (TodoListService_FindMaxClient, error) {
-	stream, err := c.cc.NewStream(ctx, &TodoListService_ServiceDesc.Streams[2], "/todolist.TodoListService/FindMax", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &todoListServiceFindMaxClient{stream}
-	return x, nil
-}
-
-type TodoListService_FindMaxClient interface {
-	Send(*FindMaxRequest) error
-	Recv() (*FindMaxResponse, error)
-	grpc.ClientStream
-}
-
-type todoListServiceFindMaxClient struct {
-	grpc.ClientStream
-}
-
-func (x *todoListServiceFindMaxClient) Send(m *FindMaxRequest) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *todoListServiceFindMaxClient) Recv() (*FindMaxResponse, error) {
-	m := new(FindMaxResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *todoListServiceClient) Square(ctx context.Context, in *SquareRequest, opts ...grpc.CallOption) (*SquareResponse, error) {
-	out := new(SquareResponse)
-	err := c.cc.Invoke(ctx, "/todolist.TodoListService/Square", in, out, opts...)
+func (c *todoListServiceClient) Insert(ctx context.Context, in *InsertRequest, opts ...grpc.CallOption) (*InsertResponse, error) {
+	out := new(InsertResponse)
+	err := c.cc.Invoke(ctx, "/todolist.TodoListService/Insert", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -162,12 +42,7 @@ func (c *todoListServiceClient) Square(ctx context.Context, in *SquareRequest, o
 // All implementations must embed UnimplementedTodoListServiceServer
 // for forward compatibility
 type TodoListServiceServer interface {
-	Sum(context.Context, *SumRequest) (*SumResponse, error)
-	SumWithDeadline(context.Context, *SumRequest) (*SumResponse, error)
-	PND(*PNDRequest, TodoListService_PNDServer) error
-	Average(TodoListService_AverageServer) error
-	FindMax(TodoListService_FindMaxServer) error
-	Square(context.Context, *SquareRequest) (*SquareResponse, error)
+	Insert(context.Context, *InsertRequest) (*InsertResponse, error)
 	mustEmbedUnimplementedTodoListServiceServer()
 }
 
@@ -175,23 +50,8 @@ type TodoListServiceServer interface {
 type UnimplementedTodoListServiceServer struct {
 }
 
-func (UnimplementedTodoListServiceServer) Sum(context.Context, *SumRequest) (*SumResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
-}
-func (UnimplementedTodoListServiceServer) SumWithDeadline(context.Context, *SumRequest) (*SumResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SumWithDeadline not implemented")
-}
-func (UnimplementedTodoListServiceServer) PND(*PNDRequest, TodoListService_PNDServer) error {
-	return status.Errorf(codes.Unimplemented, "method PND not implemented")
-}
-func (UnimplementedTodoListServiceServer) Average(TodoListService_AverageServer) error {
-	return status.Errorf(codes.Unimplemented, "method Average not implemented")
-}
-func (UnimplementedTodoListServiceServer) FindMax(TodoListService_FindMaxServer) error {
-	return status.Errorf(codes.Unimplemented, "method FindMax not implemented")
-}
-func (UnimplementedTodoListServiceServer) Square(context.Context, *SquareRequest) (*SquareResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Square not implemented")
+func (UnimplementedTodoListServiceServer) Insert(context.Context, *InsertRequest) (*InsertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
 }
 func (UnimplementedTodoListServiceServer) mustEmbedUnimplementedTodoListServiceServer() {}
 
@@ -206,129 +66,20 @@ func RegisterTodoListServiceServer(s grpc.ServiceRegistrar, srv TodoListServiceS
 	s.RegisterService(&TodoListService_ServiceDesc, srv)
 }
 
-func _TodoListService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SumRequest)
+func _TodoListService_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TodoListServiceServer).Sum(ctx, in)
+		return srv.(TodoListServiceServer).Insert(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/todolist.TodoListService/Sum",
+		FullMethod: "/todolist.TodoListService/Insert",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TodoListServiceServer).Sum(ctx, req.(*SumRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TodoListService_SumWithDeadline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SumRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TodoListServiceServer).SumWithDeadline(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/todolist.TodoListService/SumWithDeadline",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TodoListServiceServer).SumWithDeadline(ctx, req.(*SumRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TodoListService_PND_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(PNDRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(TodoListServiceServer).PND(m, &todoListServicePNDServer{stream})
-}
-
-type TodoListService_PNDServer interface {
-	Send(*PNDResponse) error
-	grpc.ServerStream
-}
-
-type todoListServicePNDServer struct {
-	grpc.ServerStream
-}
-
-func (x *todoListServicePNDServer) Send(m *PNDResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _TodoListService_Average_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(TodoListServiceServer).Average(&todoListServiceAverageServer{stream})
-}
-
-type TodoListService_AverageServer interface {
-	SendAndClose(*AverageResponse) error
-	Recv() (*AverageRequest, error)
-	grpc.ServerStream
-}
-
-type todoListServiceAverageServer struct {
-	grpc.ServerStream
-}
-
-func (x *todoListServiceAverageServer) SendAndClose(m *AverageResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *todoListServiceAverageServer) Recv() (*AverageRequest, error) {
-	m := new(AverageRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func _TodoListService_FindMax_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(TodoListServiceServer).FindMax(&todoListServiceFindMaxServer{stream})
-}
-
-type TodoListService_FindMaxServer interface {
-	Send(*FindMaxResponse) error
-	Recv() (*FindMaxRequest, error)
-	grpc.ServerStream
-}
-
-type todoListServiceFindMaxServer struct {
-	grpc.ServerStream
-}
-
-func (x *todoListServiceFindMaxServer) Send(m *FindMaxResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *todoListServiceFindMaxServer) Recv() (*FindMaxRequest, error) {
-	m := new(FindMaxRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func _TodoListService_Square_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SquareRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TodoListServiceServer).Square(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/todolist.TodoListService/Square",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TodoListServiceServer).Square(ctx, req.(*SquareRequest))
+		return srv.(TodoListServiceServer).Insert(ctx, req.(*InsertRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -341,35 +92,10 @@ var TodoListService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*TodoListServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Sum",
-			Handler:    _TodoListService_Sum_Handler,
-		},
-		{
-			MethodName: "SumWithDeadline",
-			Handler:    _TodoListService_SumWithDeadline_Handler,
-		},
-		{
-			MethodName: "Square",
-			Handler:    _TodoListService_Square_Handler,
+			MethodName: "Insert",
+			Handler:    _TodoListService_Insert_Handler,
 		},
 	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "PND",
-			Handler:       _TodoListService_PND_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "Average",
-			Handler:       _TodoListService_Average_Handler,
-			ClientStreams: true,
-		},
-		{
-			StreamName:    "FindMax",
-			Handler:       _TodoListService_FindMax_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
-		},
-	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "todolist/todolist.proto",
 }

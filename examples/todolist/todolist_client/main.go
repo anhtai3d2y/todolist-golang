@@ -20,10 +20,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 
 	"google.golang.org/grpc"
+	pb "google.golang.org/grpc/examples/todolist/todolist"
 )
 
 var (
@@ -38,5 +40,25 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	// c := pb.NewTodoListServiceClient(conn)
+	c := pb.NewTodoListServiceClient(conn)
+
+	insertTodo(c, "Ngay mai", "Di choi", "Di choi tai noi nao do voi ny")
+}
+
+func insertTodo(c pb.TodoListServiceClient, time, action, detailAction string) {
+	req := &pb.InsertRequest{
+		Todo: &pb.Todo{
+			Time:         time,
+			Action:       action,
+			DetailAction: detailAction,
+		},
+	}
+	resp, err := c.Insert(context.Background(), req)
+
+	if err != nil {
+		log.Printf("Call insert err %v\n", err)
+		return
+	}
+
+	log.Printf("Insert response %+v\n", resp)
 }

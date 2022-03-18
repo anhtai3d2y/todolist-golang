@@ -9,7 +9,7 @@ import (
 )
 
 type TodoInfo struct {
-	Id           int64 `orm:"auto"`
+	Id           int64
 	Time         string
 	Action       string
 	DetailAction string    `orm:"type(text)"`
@@ -28,6 +28,7 @@ func ConvertPbTodo2TodoInfo(pbTodo *pb.Todo) *TodoInfo {
 
 func ConvertTodoInfo2PbTodo(ti *TodoInfo) *pb.Todo {
 	return &pb.Todo{
+		Id:           ti.Id,
 		Time:         ti.Time,
 		Action:       ti.Action,
 		DetailAction: ti.DetailAction,
@@ -76,7 +77,7 @@ func Get(id int64) (*TodoInfo, error) {
 func (t *TodoInfo) Update() error {
 	o := orm.NewOrm()
 
-	num, err := o.Update(t, "Time", "Action", "DetailAtion")
+	num, err := o.Update(t, "Time", "Action", "detailAction")
 	if err != nil {
 		log.Printf("Update %+v err %v\n", t, err)
 		return err

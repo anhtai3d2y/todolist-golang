@@ -28,12 +28,14 @@ service TodoListService{
   rpc GetAllTodoList(GetAllTodoListRequest) returns (GetAllTodoListResponse){}
   rpc GetTodoList(GetTodoListRequest) returns (GetTodoListResponse){}
   rpc Update(UpdateRequest) returns (UpdateResponse){}
+  rpc Delete(DeleteRequest) returns (DeleteResponse){}
 }
 
 message Todo{
-  string time = 1;
-  string action = 2;
-  string detailAction = 3;
+  int64  id = 1;
+  string time = 2;
+  string action = 3;
+  string detailAction = 4;
 }
 
 message InsertRequest{
@@ -65,6 +67,15 @@ message UpdateRequest {
 }
 
 message UpdateResponse {
+    int32 statusCode = 1; //statusCode == 1 -> success
+    string message = 2;
+}
+
+message DeleteRequest {
+    int64 id = 1;
+}
+
+message DeleteResponse {
     int32 statusCode = 1; //statusCode == 1 -> success
     string message = 2;
 }
